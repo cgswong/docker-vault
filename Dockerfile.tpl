@@ -7,6 +7,7 @@
 # ################################################################
 
 FROM gliderlabs/alpine:3.1
+MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
 ENV VAULT_VERSION %%VERSION%%
 ENV VAULT_TMP /tmp/vault.zip
