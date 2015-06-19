@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#! /usr/bin/env bash
 # ###################################################
 # DESC.: Update Dockerfile for each version directory.
 #        Show some information on each version.
