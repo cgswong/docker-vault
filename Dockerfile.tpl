@@ -27,3 +27,4 @@ EXPOSE 8200
 
 ENTRYPOINT ["/usr/local/bin/vault"]
 CMD ["version"]
+
