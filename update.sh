@@ -13,7 +13,7 @@ aliases=(
 # Script directory
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-versions=( */ )
+versions=( 0.*/ )
 versions=( "${versions[@]%/}" )
 downloadable=$(curl -sSL 'https://dl.bintray.com/mitchellh/vault' | sed -rn 's!.*?>(vault_)?([0-9]+\.[0-9]+\.[0-9])_linux_amd64.zip<.*!\2!gp')
 url='git://github.com/cgswong/docker-vault'
