@@ -6,7 +6,7 @@
 # 2015/05/01 cgwong [v0.1.0]: Initial creation.
 # ################################################################
 
-FROM gliderlabs/alpine:3.1
+FROM alpine:latest
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
 ENV VAULT_VERSION %%VERSION%%
