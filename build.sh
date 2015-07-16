@@ -18,18 +18,22 @@ versions=( "${versions[@]%/}" )
 
 machine-init() {
   # Build test VM if needed
-  docker-machine ls -q | grep "${MACHINE}$" >/dev/null
+  docker-machine ls -q | grep "${MACHINE}" &>/dev/null
   if [ $? -ne 0 ]; then
+    if [ -z $create_machine ]; then
+      echo "[CI] Docker machine (${MACHINE}) does not exist and auto-creation disabled. Exiting."
+      exit 1
+    fi
     echo "[CI] Creating Docker host (${MACHINE})..."
     docker-machine create --driver virtualbox ${MACHINE}
-    eval "$(docker-machine env ${MACHINE})"
   else
-    docker-machine ls | grep ${MACHINE} | grep Running >/dev/null
+    docker-machine ls | grep ${MACHINE} | grep Running &>/dev/null
     if [ $? -ne 0 ]; then
       echo "[CI] Starting Docker host (${MACHINE})..."
       docker-machine start ${MACHINE}
     fi
   fi
+  eval "$(docker-machine env ${MACHINE})"
 }
 
 run-builds() {
@@ -98,5 +102,5 @@ for arg in "$@"; do
 done
 
 export MACHINE
-[ -z $create_machine ] && machine-init
+machine-init
 run-builds
