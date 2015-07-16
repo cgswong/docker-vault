@@ -18,7 +18,11 @@ for TAG in "${versions[@]}"; do
   echo "[CI] -----------------------------------------------"
   echo "[CI] Running tests for: ${IMAGE}:${TAG}"
   export TAG
-  bats tests
+  if [[ "$TAG" == "0.1.0" ]]; then
+    bats tests/test_vault-0.1.0.bats
+  else
+    bats tests
+  fi
 done
 
 echo "[CI] ${IMAGE} tests okay on all tags."
