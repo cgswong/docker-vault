@@ -7,7 +7,7 @@ set -e
 
 declare -A aliases
 aliases=(
-  [0.1.2]='latest'
+  [0.2.0]='latest'
 )
 
 # Script directory
