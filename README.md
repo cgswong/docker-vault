@@ -16,7 +16,7 @@ By default the container will run the *vault* command showing the version. Simpl
 2. Clone _docker-vault_ from [GitHub](https://github.com/cgswong/docker-vault)
 
    ```sh
-   git clone https://github.com/cgswong/docker-aws.git
+   git clone https://github.com/cgswong/docker-vault.git
    ```
 3. Build the docker image (change `[version]` below with the appropriate version, and `[your_name]` as appropriate)
 
