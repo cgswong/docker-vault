@@ -11,7 +11,7 @@ IMAGE="vault" ; export IMAGE
 MACHINE=${MACHINE:-"dev"} ; export MACHINE
 eval "$(docker-machine env ${MACHINE})"
 
-versions=( 0.1.[1-2]/ )
+versions=( 0.*/ )
 versions=( "${versions[@]%/}" )
 
 for TAG in "${versions[@]}"; do
