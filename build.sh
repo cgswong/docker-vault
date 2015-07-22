@@ -20,7 +20,7 @@ machine-init() {
   # Build test VM if needed
   docker-machine ls -q | grep "${MACHINE}" &>/dev/null
   if [ $? -ne 0 ]; then
-    if [ -z $create_machine ]; then
+    if [ ! -z $create_machine ]; then
       echo "[CI] Docker machine (${MACHINE}) does not exist and auto-creation disabled. Exiting."
       exit 1
     fi
