@@ -5,34 +5,35 @@
 # ###################################################
 set -e
 
-declare -A aliases
-aliases=(
-  [0.2.0]='latest'
-)
+# Set values
+pkg=${0##*/}
+version="0.2.1"
+pkg_path=$(cd $(dirname $0); pwd -P)
+
+# set colors
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+blue=$(tput setaf 4)
+purple=$(tput setaf 5)
+cyan=$(tput setaf 6)
+white=$(tput setaf 7)
+reset=$(tput sgr0)
 
 # Script directory
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-versions=( 0.*/ )
+versions=( "$@" )
+if [ ${#versions[@]} -eq 0 ]; then
+  versions=( ?.?.? )
+fi
 versions=( "${versions[@]%/}" )
-downloadable=$(curl -sSL 'https://dl.bintray.com/mitchellh/vault' | sed -rn 's!.*?>(vault_)?([0-9]+\.[0-9]+\.[0-9])_linux_amd64.zip<.*!\2!gp')
-url='git://github.com/cgswong/docker-vault'
+versions=( $(printf '%s\n' "${versions[@]}"|sort -V) )
 
+dlVersions=$(curl -sSL 'http://dl.bintray.com/mitchellh/vault' | sed -rn 's!.*?>(vault_)?([0-9]+\.[0-9]+\.[0-9])_linux_amd64.zip<.*!    \2!gp' | sort -V | uniq)
 for version in "${versions[@]}"; do
-  recent=$(echo "$downloadable" | grep -m 1 "$version")
-  sed 's/%%VERSION%%/'"$recent"'/' <Dockerfile.tpl >"$version/Dockerfile"
-
-  commit="$(git log -1 --format='format:%H' -- "$version")"
-  fullVersion="$(grep -m1 'ENV VAULT_VERSION' "$version/Dockerfile" | cut -d' ' -f3)"
-
-  versionAliases=()
-  while [ "$fullVersion" != "$version" -a "${fullVersion%[-]*}" != "$fullVersion" ]; do
-    versionAliases+=( $fullVersion )
-    fullVersion="${fullVersion%[-]*}"
-  done
-  versionAliases+=( $version ${aliases[$version]} )
-
-  for va in "${versionAliases[@]}"; do
-    echo "$va: ${url}@${commit} $version"
-  done
+  echo "${yellow}Updating version: ${version}${reset}"
+  cp docker-entrypoint.sh "${version}/" &>/dev/null
+  sed -e 's/%%VERSION%%/'"$version"'/' < Dockerfile.tpl > "$version/Dockerfile"
 done
+echo "${green}Complete${reset}"

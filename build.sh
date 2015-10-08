@@ -5,45 +5,57 @@
 
 # Set values
 pkg=${0##*/}
-version="0.1.0"
+version="0.2.1"
 pkg_path=$(cd $(dirname $0); pwd -P)
-host=$(hostname)
-logfile="$pkg_path/$pkg.log"
 
-IMAGE="vault"
-MACHINE="dev"
+DOCKER_IMAGE=${1:-"vault"} ; export DOCKER_IMAGE
+DOCKER_MACHINE_NAME=${2:-"citest"} ; export DOCKER_MACHINE_NAME
+DOCKER_MACHINE_HDD=${DOCKER_MACHINE_HDD:-"10240"} export DOCKER_MACHINE_HDD
 
-versions=( 0.*/ )
+# set colors
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+blue=$(tput setaf 4)
+purple=$(tput setaf 5)
+cyan=$(tput setaf 6)
+white=$(tput setaf 7)
+reset=$(tput sgr0)
+
+versions=( "$@" )
+if [ ${#versions[@]} -eq 0 ]; then
+        versions=( ?.?.? )
+fi
 versions=( "${versions[@]%/}" )
+versions=( $(printf '%s\n' "${versions[@]}"|sort -V) )
 
 machine-init() {
   # Build test VM if needed
-  docker-machine ls -q | grep "${MACHINE}" &>/dev/null
+  docker-machine ls -q | grep "${DOCKER_MACHINE_NAME}" &>/dev/null
   if [ $? -ne 0 ]; then
     if [ ! -z $create_machine ]; then
-      echo "[CI] Docker machine (${MACHINE}) does not exist and auto-creation disabled. Exiting."
+      echo "${red}[CI] Docker host (${DOCKER_MACHINE_NAME}) does not exist and auto-creation disabled. Exiting.${reset}"
       exit 1
     fi
-    echo "[CI] Creating Docker host (${MACHINE})..."
-    docker-machine create --driver virtualbox ${MACHINE}
+    echo "${yellow}[CI] Creating Docker host (${DOCKER_MACHINE_NAME})...${reset}"
+    docker-machine create --driver virtualbox ${DOCKER_MACHINE_NAME} --virtualbox-disk-size ${DOCKER_MACHINE_HDD}
   else
-    docker-machine ls | grep ${MACHINE} | grep Running &>/dev/null
+    docker-machine ls | grep ${DOCKER_MACHINE_NAME} | grep Running &>/dev/null
     if [ $? -ne 0 ]; then
-      echo "[CI] Starting Docker host (${MACHINE})..."
-      docker-machine start ${MACHINE}
+      echo "${green}[CI] Starting Docker host (${DOCKER_MACHINE_NAME})...${reset}"
+      docker-machine start ${DOCKER_MACHINE_NAME}
     fi
   fi
-  eval "$(docker-machine env ${MACHINE})"
+  eval "$(docker-machine env ${DOCKER_MACHINE_NAME})"
 }
 
 run-builds() {
   # Run builds
   for TAG in "${versions[@]}"; do
-    echo "[CI] Building image: ${IMAGE}:${TAG}"
-    docker build -t ${IMAGE}:${TAG} ${TAG}/
+    echo "${green}[CI] Building image: ${DOCKER_IMAGE}:${TAG}${reset}"
+    docker build -t ${DOCKER_IMAGE}:${TAG} ${TAG}/
   done
-
-  echo "[CI] All tags build okay."
+  echo "${green}[CI] All tags build okay.${reset}"
 }
 
 
@@ -88,19 +100,18 @@ for arg in "$@"; do
       create_machine=0
       ;;
     -m=* | --machine=*)
-      MACHINE="$optarg"
+      DOCKER_MACHINE_NAME="$optarg"
       ;;
     -*)
-      echo "[CI] Unknown option $arg, exiting..." && exit 1
+      echo "${red}[CI] Unknown option $arg, exiting...${reset}" && exit 1
       ;;
     *)
-      echo "[CI] Unknown option or missing argument for $arg, exiting."
+      echo "${red}[CI] Unknown option or missing argument for $arg, exiting.${reset}"
       usage
       exit 1
       ;;
   esac
 done
 
-export MACHINE
 machine-init
 run-builds
