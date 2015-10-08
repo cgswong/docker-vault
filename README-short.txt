@@ -1,1 +1,0 @@
-HashiCorp Vault image for secure access of various secrets (~22 MB).
