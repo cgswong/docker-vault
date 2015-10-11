@@ -30,7 +30,7 @@ versions=( $(printf '%s\n' "${versions[@]}"|sort -V) )
 dlVersions=$(curl -sSL 'http://dl.bintray.com/mitchellh/vault' | sed -rn 's!.*?>(vault_)?([0-9]+\.[0-9]+\.[0-9])_linux_amd64.zip<.*!    \2!gp' | sort -V | uniq)
 for version in "${versions[@]}"; do
   echo "${yellow}Updating version: ${version}${reset}"
-  cp docker-entrypoint.sh "${version}/" &>/dev/null
+#  cp docker-entrypoint.sh "${version}/" &>/dev/null
   sed -e 's/%%VERSION%%/'"$version"'/' < Dockerfile.tpl > "$version/Dockerfile"
 done
 echo "${green}Complete${reset}"

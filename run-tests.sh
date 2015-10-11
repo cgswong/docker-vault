@@ -30,10 +30,6 @@ for VERSION in "${versions[@]}"; do
   echo "${green}[CI] -----------------------------------------------"
   echo "${green}[CI] Running tests for: ${DOCKER_IMAGE}:${VERSION}${reset}"
   export VERSION
-  if [[ "$TAG" == "0.1.0" ]]; then
-    bats tests/test_vault-0.1.0.bats
-  else
-    bats tests
-  fi
+  bats tests
 done
 echo "${yellow}[CI] ${DOCKER_IMAGE} tests completed on all tags.${reset}"
