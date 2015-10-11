@@ -28,7 +28,7 @@ By default the container will run the *vault* command showing the version. Simpl
 4. Run a docker container with that image (change [your_name] as done above)
 
    ```sh
-   docker run -it [your_name]/vault:latest vault -help
+   docker run -it [your_name]/vault:latest -help
    ```
 
 # User Feedback
