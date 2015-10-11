@@ -1,0 +1,31 @@
+general:
+  branches:
+    only:
+      - master
+      - develop
+
+machine:
+  services:
+    - docker
+  environment:
+    DOCKER_IMAGE: vault
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+  override:
+    - docker info
+    - if [ -e ~/docker/image.tar ]; then docker load --input ~/docker/image.tar; fi
+    - docker build -t $DOCKER_IMAGE:$VERSION .
+    - mkdir -p ~/docker; docker save $DOCKER_IMAGE:$VERSION > ~/docker/image.tar
+
+test:
+  override:
+    - ~/$CIRCLE_PROJECT_REPONAME/run-tests.sh CI
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PWD
+      - docker push $CIRCLE_PROJECT_USERNAME/$DOCKER_IMAGE:$VERSION

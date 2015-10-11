@@ -1,13 +1,10 @@
 #! /usr/bin/env bash
-# ###################################################
-# DESC.: Update Dockerfile for each version directory.
-#        Show some information on each version.
-# ###################################################
+# Add files for each version.
+
 set -e
 
 # Set values
 pkg=${0##*/}
-version="0.2.1"
 pkg_path=$(cd $(dirname $0); pwd -P)
 
 # set colors

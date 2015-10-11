@@ -1,11 +1,8 @@
 #! /bin/bash
-# #########################################
-# DESC: Build images.
-# #########################################
+# Build images.
 
 # Set values
 pkg=${0##*/}
-version="0.2.1"
 pkg_path=$(cd $(dirname $0); pwd -P)
 
 DOCKER_IMAGE=${1:-"vault"} ; export DOCKER_IMAGE
@@ -24,7 +21,7 @@ reset=$(tput sgr0)
 
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
-        versions=( ?.?.? )
+  versions=( ?.?.? )
 fi
 versions=( "${versions[@]%/}" )
 versions=( $(printf '%s\n' "${versions[@]}"|sort -V) )
