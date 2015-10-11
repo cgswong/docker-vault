@@ -1,12 +1,6 @@
-# ################################################################
-# DESC: Docker file to run Hashicorp Vault (vaultproject.io)
-#
-# LOG:
-# yyyy/mm/dd [name] [version]: [notes]
-# 2015/05/01 cgwong [v0.1.0]: Initial creation.
-# ################################################################
+# Docker file to run Hashicorp Vault (vaultproject.io)
 
-FROM alpine:latest
+FROM alpine:3.2
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
 ENV VAULT_VERSION 0.2.0
@@ -27,4 +21,3 @@ EXPOSE 8200
 
 ENTRYPOINT ["/usr/local/bin/vault"]
 CMD ["version"]
-
