@@ -15,6 +15,7 @@ dependencies:
     - "~/docker"
   override:
     - docker info
+    - mkdir -p ~/docker
 
 test:
   override:
