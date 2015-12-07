@@ -1,4 +1,6 @@
 # What is docker-vault?
+[![Circle CI](https://circleci.com/gh/cgswong/docker-vault.svg?style=svg)](https://circleci.com/gh/cgswong/docker-vault)
+
 This is a Dockerized image of [Hashicorp's Vault](https://vaultproject.io/intro/index.html). Vault is tool to securely access _secrets_ such as API keys, passwords, certificates, token, and so on.
 
 
