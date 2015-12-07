@@ -1,5 +1,5 @@
 #! /bin/bash
-# Run testing.
+# Deploy to Docke Registry
 
 # Set values
 # Set values
@@ -10,12 +10,8 @@ pkg_root=$(dirname "${BASH_SOURCE}")
 source "${pkg_root}/common.sh"
 
 : ${DOCKER_IMAGE:="vault"}
-#: ${DOCKER_MACHINE_NAME:="vaulttest"}
 
 export DOCKER_IMAGE
-#export DOCKER_MACHINE_NAME
-
-#eval "$(docker-machine env ${DOCKER_MACHINE_NAME})"
 
 main() {
   versions=( "$@" )
@@ -27,11 +23,7 @@ main() {
 
   for TAG in "${versions[@]}"; do
     export TAG
-    log "${yellow}---------------[START]-------------------------${reset}"
-    for test in $(ls -1 tests/*.sh); do
-      source ${test}
-    done
-    log "${yellow}----------------[END]--------------------------${reset}"
+    docker push ${1}/${DOCKER_IMAGE}:${TAG}
   done
 }
 

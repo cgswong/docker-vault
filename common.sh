@@ -27,6 +27,6 @@ die() {
 
 # Housekeeping env check
 check-env() {
-  [ -z {$DOCKER_IMAGE} ] && die "DOCKER_IMAGE env variable must be set!"
-  [ -z {$VERSION} ] && die "VERSION env variable must be set!"
+  [ -z ${DOCKER_IMAGE} ] && die "DOCKER_IMAGE env variable must be set!"
+  [ -z ${TAG} ] && die "TAG env variable must be set!"
 }
