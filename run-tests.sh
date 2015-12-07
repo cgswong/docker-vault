@@ -2,7 +2,6 @@
 # Run testing.
 
 # Set values
-# Set values
 pkg=${0##*/}
 pkg_root=$(dirname "${BASH_SOURCE}")
 
@@ -10,12 +9,8 @@ pkg_root=$(dirname "${BASH_SOURCE}")
 source "${pkg_root}/common.sh"
 
 : ${DOCKER_IMAGE:="vault"}
-#: ${DOCKER_MACHINE_NAME:="vaulttest"}
 
 export DOCKER_IMAGE
-#export DOCKER_MACHINE_NAME
-
-#eval "$(docker-machine env ${DOCKER_MACHINE_NAME})"
 
 main() {
   versions=( "$@" )
