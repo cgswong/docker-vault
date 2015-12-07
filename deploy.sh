@@ -23,6 +23,7 @@ main() {
 
   for TAG in "${versions[@]}"; do
     export TAG
+    log "${green}Deploying to ${1}/${DOCKER_IMAGE}:${TAG}${reset}"
     docker push ${1}/${DOCKER_IMAGE}:${TAG}
   done
 }
