@@ -2,8 +2,7 @@
 # Common enviornment setup
 
 # Set values
-pkg=${0##*/}
-pkg_path=$(cd $(dirname $0); pwd -P)
+pkg=${BASH_SOURCE##*/}
 
 # set colors
 red=$(tput setaf 1)
