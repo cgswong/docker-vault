@@ -1,5 +1,5 @@
 #! /bin/bash
-# Deploy to Docke Registry
+# Deploy to Docker Registry
 
 # Set values
 # Set values

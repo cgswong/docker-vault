@@ -3,7 +3,7 @@
 FROM gliderlabs/alpine:3.3
 MAINTAINER Stuart Wong <cgs.wong@gmail.com>
 
-ENV VAULT_VERSION 0.3.1
+ENV VAULT_VERSION 0.4.0
 ENV VAULT_TMP /tmp/vault.zip
 ENV VAULT_HOME /usr/local/bin
 ENV PATH $PATH:${VAULT_HOME}
