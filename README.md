@@ -11,6 +11,23 @@ A pre-built image is available on [Docker Hub](https://registry.hub.docker.com/u
 
 By default the container will run the *vault* command showing the version. Simply run your regular `vault` commands as normal to use the image.
 
+### notes
+##### default binding
+vault binds to 127.0.0.1 by default, make sure you bind vault's listener to to 0.0.0.0.
+##### development server
+when running the development server, vault binds to localhost by default. A possible workaround would be to create the following vault config:
+```
+listener "tcp" {
+  address = "0.0.0.0:9000"
+  tls_disable = 1
+}
+```
+and then pass the configuration to vault. for example, if you saved the mentioned configuration at /tmp/vault.conf:
+```
+docker run -it --expose 9000 -p 127.0.0.1:8200:9000 \
+        -v /tmp/vault.conf:/root/vault.conf cgswong/vault:latest \
+        server -config /root/vault.conf -dev
+```
 
 # Build from Source
 1. Make sure [Docker](https://www.docker.com) is installed.
