@@ -11,11 +11,17 @@ source "${pkg_root}/../common.sh"
 # main function
 main() {
   log "${green}Confirming ${DOCKER_IMAGE} version${reset}"
-  docker run --rm --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${TAG} -version
+  _version=$(docker run --rm --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${TAG} -version | awk '{print $NF}' | tr -d 'v')
   if [ $? -eq 0 ]; then
     log "${green}[PASS] ${DOCKER_IMAGE}${reset}"
   else
     die "${DOCKER_IMAGE} version check"
+  fi
+
+  if [ "x${TAG}x" != "x${_version}x" ] ; then
+    die "${DOCKER_IMAGE} version compare"
+  else
+    log "${green}[PASS] ${DOCKER_IMAGE} version compare${reset}"
   fi
 }
 
