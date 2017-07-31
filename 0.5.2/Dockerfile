@@ -9,12 +9,13 @@ ENV VAULT_HOME /usr/local/bin
 ENV PATH $PATH:${VAULT_HOME}
 
 RUN apk --no-cache add \
-      bash \
-      ca-certificates \
-      wget &&\
-    wget --quiet --output-document=${VAULT_TMP} https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip &&\
-    unzip ${VAULT_TMP} -d ${VAULT_HOME} &&\
-    rm -f ${VAULT_TMP}
+    ca-certificates && \
+    cd /tmp && \
+    wget -q https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
+    mv vault_${VAULT_VERSION}_linux_amd64.zip ${VAULT_TMP} && \
+    unzip ${VAULT_TMP} -d ${VAULT_HOME} && \
+    rm -f ${VAULT_TMP} && \
+    apk --no-cache del ca-certificates
 
 # Listener API tcp port
 EXPOSE 8200
